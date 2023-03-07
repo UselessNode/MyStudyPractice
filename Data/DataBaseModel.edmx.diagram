@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="614cc41a10ee4278b6681eec17ffc644" Name="Diagram1" ShowGrid="true" DisplayType="true" ZoomLevel="55">
+        <EntityTypeShape EntityType="DatabaseModel.Forwarder" Width="2.5" PointX="8.125" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Invoice" Width="2.625" PointX="4.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Product" Width="1.875" PointX="2.625" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.ProductCategory" Width="1.5" PointX="6" PointY="5.875" IsExpanded="true" FillColor="DarkSlateGray" />
+        <EntityTypeShape EntityType="DatabaseModel.ProductType" Width="1.5" PointX="6" PointY="7.625" IsExpanded="true" FillColor="DarkSlateGray" />
+        <EntityTypeShape EntityType="DatabaseModel.Supplier" Width="2.25" PointX="0.875" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.SupplierProduct" Width="1.5" PointX="0.5" PointY="4.625" IsExpanded="true" FillColor="Indigo" />
+        <EntityTypeShape EntityType="DatabaseModel.sysdiagrams" Width="1.5" PointX="9.875" PointY="5.25" FillColor="White" />
+        <AssociationConnector Association="DatabaseModel.FK_Invoice_Forwarder" />
+        <AssociationConnector Association="DatabaseModel.FK_Invoice_Product" />
+        <AssociationConnector Association="DatabaseModel.FK_Invoice_Supplier" />
+        <AssociationConnector Association="DatabaseModel.FK_Product_ProductCategory" />
+        <AssociationConnector Association="DatabaseModel.FK_Product_ProductType" />
+        <AssociationConnector Association="DatabaseModel.FK_SupplierProduct_Product" />
+        <AssociationConnector Association="DatabaseModel.FK_SupplierProduct_Supplier" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
