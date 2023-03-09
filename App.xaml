@@ -9,13 +9,12 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme
+                    x:Name="appTheme"
                     BaseTheme="Dark"
-                    PrimaryColor="Teal"
+                    PrimaryColor="Grey"
                     SecondaryColor="Amber" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <!--<ResourceDictionary Source="ThemeDictionary.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
-            <sys:String x:Key="xTheme">Dark</sys:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

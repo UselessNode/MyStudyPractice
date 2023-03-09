@@ -30,6 +30,7 @@
         <StackPanel>
             <TextBox
                 x:Name="TextBoxID"
+                IsReadOnly="True"
                 materialDesign:HintAssist.Hint="Id"
                 Text="{Binding Id}" />
             <DatePicker
@@ -68,7 +69,8 @@
                 Width="200"
                 Margin="10"
                 Click="SaveButton_Click"
-                Content="Сохранить изменения" />
+                Content="Сохранить изменения"
+                Style="{StaticResource MaterialDesignFlatAccentBgButton}" />
         </StackPanel>
     </materialDesign:ColorZone>
 </Window>

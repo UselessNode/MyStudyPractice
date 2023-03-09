@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using MaterialDesignThemes.Wpf;
+using System;
+using System.Windows;
 
 namespace AppDB.View
 {
@@ -10,6 +12,26 @@ namespace AppDB.View
         public Authorization()
         {
             InitializeComponent();
+            OpenMainWindow();
+            if(Properties.Settings.Default.isDarkTheme)
+            {
+                Console.Write("Theme = Dark");
+                SwithTheme(Theme.Dark);
+            }
+            else
+            {
+                Console.Write("Theme = Light");
+                SwithTheme(Theme.Light);
+            }
+            
+        }
+
+        public static void SwithTheme(IBaseTheme baseTheme)
+        {
+            PaletteHelper palette = new PaletteHelper();
+            ITheme theme = palette.GetTheme();
+            theme.SetBaseTheme(baseTheme);
+            palette.SetTheme(theme);
         }
 
         private void EnterenceButton_Click(object sender, RoutedEventArgs e)
@@ -18,7 +40,7 @@ namespace AppDB.View
                 Password.Password == "admin")
             {
                 OpenMainWindow();
-                this.Hide();
+                
             }
             else
             {
@@ -31,6 +53,7 @@ namespace AppDB.View
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
+            this.Hide();
         }
     }
 }

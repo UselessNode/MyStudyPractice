@@ -1,19 +1,13 @@
 ﻿using AppDB.Data;
 using AppDB.View;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Web.UI;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AppDB
 {
@@ -26,6 +20,8 @@ namespace AppDB
         {
             InitializeComponent();
             ReadData();
+            DarkModeToggle.IsChecked = Properties.Settings.Default.isDarkTheme;
+
         }
 
         public void CreateRecordButton_Click(object sender, RoutedEventArgs e)
@@ -83,7 +79,7 @@ namespace AppDB
         {
             if (DatePickerEnd.SelectedDate != null && DatePickerStart.SelectedDate != null)
             {
-                if(DatePickerEnd.SelectedDate > DatePickerStart.SelectedDate)
+                if (DatePickerEnd.SelectedDate > DatePickerStart.SelectedDate)
                 {
                     var start = DatePickerStart.SelectedDate;
                     var end = DatePickerEnd.SelectedDate;
@@ -100,22 +96,46 @@ namespace AppDB
             Application.Current.Shutdown();
         }
 
-        private void ThemeToggleButton_Checked(object sender, RoutedEventArgs e)
-        {
-            //Смена темы
 
-            //var app = Application.Current as App;
-            //// Проверяем, какое значение записано в App.xaml
-            //if (BaseTheme == "Light")
-            //{
-            //    // Меняем значение на Dark
-            //    app.Theme = "Dark";
-            //}
-            //else
-            //{
-            //    // Меняем значение на Light
-            //    app.Theme = "Light";
-            //}
+        public void SetLightDark(bool isDark)
+        {
+            var resources = Application.Current.Resources.MergedDictionaries;
+
+            var existingResourceDictionary = Application.Current.Resources.MergedDictionaries
+                                            .Where(rd => rd.Source != null)
+                                            .SingleOrDefault(rd => Regex.Match(rd.Source.OriginalString, @"(\/MaterialDesignExtensions;component\/Themes\/MaterialDesign((Light)|(Dark))Theme)").Success);
+
+            // MaterialDesignTheme.Defaults.xaml
+            var source = $"pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignDark.Theme.xaml";
+            var newResourceDictionary = new ResourceDictionary() { Source = new Uri(source) };
+
+            Application.Current.Resources.MergedDictionaries.Remove(existingResourceDictionary);
+            Application.Current.Resources.MergedDictionaries.Add(newResourceDictionary);
+        }
+
+        private void DarkModeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (DarkModeToggle.IsChecked == true)
+            {
+                SwithTheme(Theme.Dark);
+                AppDB.Properties.Settings.Default.Theme = Theme.Dark.ToString();
+                AppDB.Properties.Settings.Default.Save();
+            }
+            else
+            {
+                SwithTheme(Theme.Light);
+                AppDB.Properties.Settings.Default.Theme = Theme.Light.ToString();
+                AppDB.Properties.Settings.Default.Save();
+            }
+
+        }
+
+        public static void SwithTheme(IBaseTheme baseTheme)
+        {
+            PaletteHelper palette = new PaletteHelper();
+            ITheme theme = palette.GetTheme();
+            theme.SetBaseTheme(baseTheme);
+            palette.SetTheme(theme);
         }
     }
 }

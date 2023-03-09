@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using AppDB;
+using AppDB.View;
 using System.Windows;
 
 namespace AppDB
@@ -14,5 +16,8 @@ namespace AppDB
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+        }
     }
 }
