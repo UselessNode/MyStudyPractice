@@ -58,6 +58,13 @@
                                     BorderThickness="0"
                                     FontSize="12"
                                     TextChanged="SearchTextBox_TextChanged" />
+                                <Button
+                                    x:Name="DeleteRecordButton"
+                                    Padding="0"
+                                    Click="DeleteRecordButton_Click"
+                                    Style="{StaticResource MaterialDesignFlatDarkButton}">
+                                    <materialDesign:PackIcon Kind="ClearBox" />
+                                </Button>
                             </StackPanel>
                             <DatePicker
                                 x:Name="DatePickerStart"
@@ -81,10 +88,10 @@
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
                         CanUserDeleteRows="False"
+                        CanUserReorderColumns="False"
                         CanUserResizeColumns="False"
                         CanUserResizeRows="False"
                         CanUserSortColumns="False"
-                        CanUserReorderColumns="False"
                         FocusVisualStyle="{x:Null}">
 
                         <DataGrid.Columns>
@@ -242,21 +249,18 @@
             <materialDesign:Card Margin="15" Padding="25">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <ToggleButton
+                        <CheckBox
                             x:Name="DarkModeToggle"
                             Click="DarkModeToggle_Click"
-                            Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                            ToolTip="Тёмная тема" />
+                            IsChecked="True" />
                         <Label Content="Тёмная тема" />
                     </StackPanel>
-                    <StackPanel HorizontalAlignment="Left">
-                        <ComboBox x:Name="primaryPaletteComboBox" Width="250" />
-                    </StackPanel>
-                    <ListBox x:Name="RadioButtonGroupChoiceChip" Style="{StaticResource MaterialDesignChoiceChipListBox}">
-                        <ListBoxItem Content="Mercury" />
-                        <ListBoxItem Content="Venus" />
-                        <ListBoxItem Content="Earth" />
-                        <ListBoxItem Content="Pluto" />
+                    <Label Padding="0,15,0,5" Content="Основной цвет приложения" />
+                    <ListBox x:Name="RadioButtonGroupChoiceChip" Style="{StaticResource MaterialDesignFilterChipAccentListBox}">
+                        <ListBoxItem Content="Серый" IsSelected="True" />
+                        <ListBoxItem Content="Жёлтый" IsEnabled="False" />
+                        <ListBoxItem Content="Синий" IsEnabled="False" />
+                        <ListBoxItem Content="Красный" IsEnabled="False" />
                     </ListBox>
                 </StackPanel>
             </materialDesign:Card>
@@ -276,12 +280,24 @@
                         Visibility="Collapsed" />
                 </StackPanel>
             </TabItem.Header>
-            <TextBlock>
-                <Run>
-                    Приложение разработано на C# 9.0 с импользованием ADO.Net и Entity FrameWork 6.0
-                    В качестве интерфейса используется библиотека Material Design
-                </Run>
-            </TextBlock>
+            <materialDesign:Card Margin="15" Padding="25">
+                <TextBlock
+                    FontFamily="Bahnschrift"
+                    FontSize="24"
+                    TextWrapping="Wrap">
+                    <Run Text="Приложение разработано на" />
+                    <Run Foreground="Orange" Text="C# 9.0" />
+                    <Run Text="с импользованием" />
+                    <Run Foreground="Orange" Text="ADO.Net" />
+                    <Run Text="и" />
+                    <Run Foreground="Orange" Text="Entity FrameWork 6." />
+                    <LineBreak /><LineBreak />
+                    <Run Text="В качестве интерфейса используется библиотека" />
+                    <Hyperlink Foreground="Orange" NavigateUri="http://materialdesigninxaml.net/">
+                        Material Design
+                    </Hyperlink>
+                </TextBlock>
+            </materialDesign:Card>
         </TabItem>
     </TabControl>
 </Window>

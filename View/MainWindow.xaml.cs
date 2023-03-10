@@ -20,8 +20,6 @@ namespace AppDB
         {
             InitializeComponent();
             ReadData();
-            DarkModeToggle.IsChecked = Properties.Settings.Default.isDarkTheme;
-
         }
 
         public void CreateRecordButton_Click(object sender, RoutedEventArgs e)
@@ -94,23 +92,6 @@ namespace AppDB
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-
-        public void SetLightDark(bool isDark)
-        {
-            var resources = Application.Current.Resources.MergedDictionaries;
-
-            var existingResourceDictionary = Application.Current.Resources.MergedDictionaries
-                                            .Where(rd => rd.Source != null)
-                                            .SingleOrDefault(rd => Regex.Match(rd.Source.OriginalString, @"(\/MaterialDesignExtensions;component\/Themes\/MaterialDesign((Light)|(Dark))Theme)").Success);
-
-            // MaterialDesignTheme.Defaults.xaml
-            var source = $"pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignDark.Theme.xaml";
-            var newResourceDictionary = new ResourceDictionary() { Source = new Uri(source) };
-
-            Application.Current.Resources.MergedDictionaries.Remove(existingResourceDictionary);
-            Application.Current.Resources.MergedDictionaries.Add(newResourceDictionary);
         }
 
         private void DarkModeToggle_Click(object sender, RoutedEventArgs e)

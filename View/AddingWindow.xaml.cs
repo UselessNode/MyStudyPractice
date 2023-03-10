@@ -35,7 +35,6 @@ namespace AppDB.View
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
             ValidateInput();
             database.Invoice.Add(_invoice);
             database.SaveChanges();
