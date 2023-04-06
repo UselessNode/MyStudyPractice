@@ -4,6 +4,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Windows;
@@ -69,7 +70,9 @@ namespace AppDB
 
         private void ResetSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            SearchTextBox.Text = "";
+            SearchTextBox.Text = null;
+            DatePickerStart.Text = null;
+            DatePickerEnd.Text = null;
             ReadData();
         }
 

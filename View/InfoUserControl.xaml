@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="AppDB.View.InfoUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AppDB.View"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <materialDesign:Card
+        x:Name="InfoCard"
+        Margin="15"
+        Padding="25">
+        <StackPanel Orientation="Vertical">
+            <TextBlock
+                x:Name="TextBlockInfo"
+                FontFamily="Bahnschrift"
+                FontSize="20"
+                TextAlignment="Justify"
+                TextWrapping="Wrap">
+                <Run Text="Приложение разработано на" />
+                <Run Foreground="Orange" Text="C# 9.0" />
+                <Run Text="с импользованием" />
+                <Run Foreground="Orange" Text="ADO.Net" />
+                <Run Text="и" />
+                <Run Foreground="Orange" Text="Entity FrameWork 6." />
+                <LineBreak /><LineBreak />
+                <Run Text="В качестве интерфейса используется библиотека" />
+                <Hyperlink Foreground="Orange" NavigateUri="http://materialdesigninxaml.net/">
+                    Material Design
+                </Hyperlink>
+            </TextBlock>
+            <Line
+                Margin="15"
+                Stroke="Orange"
+                StrokeThickness="4"
+                X1="0"
+                X2="{Binding ElementName=TextBlockInfo, Path=ActualWidth}"
+                Y1="5"
+                Y2="5" />
+            <TextBlock
+                FontFamily="Bahnschrift"
+                FontSize="20"
+                LineHeight="25"
+                TextAlignment="Justify"
+                TextWrapping="WrapWithOverflow">
+                <Run Text="Lorem ipsum dolor sit amet hendrerit. Facilisis sed dolore dolor volutpat stet. Et duis at. Dolore tempor eros sed labore et. Blandit tempor sit ipsum et sanctus te. Sed clita ut nonumy ipsum sea ex stet. Nonumy sit erat dolore at dolore clita." />
+            </TextBlock>
+        </StackPanel>
+    </materialDesign:Card>
+
+</UserControl>

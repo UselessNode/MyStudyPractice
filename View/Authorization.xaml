@@ -54,7 +54,6 @@
                         materialDesign:HintAssist.Hint="Пароль"
                         materialDesign:PasswordBoxAssist.Password="{Binding Password1, Mode=TwoWay}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
-                        IsEnabled="{Binding ElementName=RevealPasswordDefaultEnabled, Path=IsChecked}"
                         Style="{StaticResource MaterialDesignRevealPasswordBox}" />
                 </StackPanel>
                 <Button

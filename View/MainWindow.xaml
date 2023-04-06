@@ -6,9 +6,10 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:view="clr-namespace:AppDB.View"
     x:Name="AppMainWindow"
     Title="Менеджер базы данных"
-    Width="800"
+    Width="850"
     MinWidth="800"
     MinHeight="500"
     Closing="Window_Closing"
@@ -23,11 +24,12 @@
             <TabItem.Header>
                 <StackPanel Margin="0">
                     <materialDesign:PackIcon
-                        Width="20"
-                        Height="20"
+                        Width="30"
+                        Height="30"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Kind="Table" />
+                        Kind="Table"
+                        ToolTip="Таблица «Invoice»" />
                     <Label
                         Content="Таблица"
                         FontSize="10"
@@ -61,8 +63,9 @@
                                 <Button
                                     x:Name="DeleteRecordButton"
                                     Padding="0"
-                                    Click="DeleteRecordButton_Click"
-                                    Style="{StaticResource MaterialDesignFlatDarkButton}">
+                                    Click="ResetSearchButton_Click"
+                                    Style="{StaticResource MaterialDesignFlatDarkButton}"
+                                    ToolTip="Сброс фильтров и поиска">
                                     <materialDesign:PackIcon Kind="ClearBox" />
                                 </Button>
                             </StackPanel>
@@ -235,11 +238,12 @@
             <TabItem.Header>
                 <StackPanel>
                     <materialDesign:PackIcon
-                        Width="20"
-                        Height="20"
+                        Width="30"
+                        Height="30"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Kind="Settings" />
+                        Kind="Settings"
+                        ToolTip="Настройки" />
                     <Label
                         Content="Настройки"
                         FontSize="10"
@@ -257,7 +261,10 @@
                     </StackPanel>
                     <Label Padding="0,15,0,5" Content="Основной цвет приложения" />
                     <ListBox x:Name="RadioButtonGroupChoiceChip" Style="{StaticResource MaterialDesignFilterChipAccentListBox}">
-                        <ListBoxItem Content="Серый" IsSelected="True" />
+                        <ListBoxItem
+                            Content="Серый"
+                            IsEnabled="False"
+                            IsSelected="True" />
                         <ListBoxItem Content="Жёлтый" IsEnabled="False" />
                         <ListBoxItem Content="Синий" IsEnabled="False" />
                         <ListBoxItem Content="Красный" IsEnabled="False" />
@@ -269,35 +276,19 @@
             <TabItem.Header>
                 <StackPanel>
                     <materialDesign:PackIcon
-                        Width="20"
-                        Height="20"
+                        Width="30"
+                        Height="30"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Kind="About" />
+                        Kind="About"
+                        ToolTip="Справка" />
                     <Label
                         Content="Справка"
                         FontSize="10"
                         Visibility="Collapsed" />
                 </StackPanel>
             </TabItem.Header>
-            <materialDesign:Card Margin="15" Padding="25">
-                <TextBlock
-                    FontFamily="Bahnschrift"
-                    FontSize="24"
-                    TextWrapping="Wrap">
-                    <Run Text="Приложение разработано на" />
-                    <Run Foreground="Orange" Text="C# 9.0" />
-                    <Run Text="с импользованием" />
-                    <Run Foreground="Orange" Text="ADO.Net" />
-                    <Run Text="и" />
-                    <Run Foreground="Orange" Text="Entity FrameWork 6." />
-                    <LineBreak /><LineBreak />
-                    <Run Text="В качестве интерфейса используется библиотека" />
-                    <Hyperlink Foreground="Orange" NavigateUri="http://materialdesigninxaml.net/">
-                        Material Design
-                    </Hyperlink>
-                </TextBlock>
-            </materialDesign:Card>
+            <view:InfoUserControl />
         </TabItem>
     </TabControl>
 </Window>
