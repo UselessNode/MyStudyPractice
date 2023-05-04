@@ -77,6 +77,18 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <Association Name="FK_Forwarder_Supplier">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+          <End Role="Forwarder" Type="Self.Forwarder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Forwarder">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invoice_Forwarder">
           <End Role="Forwarder" Type="Self.Forwarder" Multiplicity="0..1" />
           <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
@@ -170,6 +182,10 @@
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SupplierProduct" EntityType="Self.SupplierProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Forwarder_Supplier" Association="Self.FK_Forwarder_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Forwarder" EntitySet="Forwarder" />
+          </AssociationSet>
           <AssociationSet Name="FK_Invoice_Forwarder" Association="Self.FK_Invoice_Forwarder">
             <End Role="Forwarder" EntitySet="Forwarder" />
             <End Role="Invoice" EntitySet="Invoice" />
@@ -211,6 +227,7 @@
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="SupplierId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Invoice" Relationship="DatabaseModel.FK_Invoice_Forwarder" FromRole="Forwarder" ToRole="Invoice" />
+          <NavigationProperty Name="Supplier" Relationship="DatabaseModel.FK_Forwarder_Supplier" FromRole="Forwarder" ToRole="Supplier" />
         </EntityType>
         <EntityType Name="Invoice">
           <Key>
@@ -268,6 +285,7 @@
           <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Invoice" Relationship="DatabaseModel.FK_Invoice_Supplier" FromRole="Supplier" ToRole="Invoice" />
           <NavigationProperty Name="SupplierProduct" Relationship="DatabaseModel.FK_SupplierProduct_Supplier" FromRole="Supplier" ToRole="SupplierProduct" />
+          <NavigationProperty Name="Forwarder" Relationship="DatabaseModel.FK_Forwarder_Supplier" FromRole="Supplier" ToRole="Forwarder" />
         </EntityType>
         <EntityType Name="SupplierProduct">
           <Key>
@@ -315,6 +333,10 @@
           <AssociationSet Name="FK_SupplierProduct_Supplier" Association="DatabaseModel.FK_SupplierProduct_Supplier">
             <End Role="Supplier" EntitySet="Supplier" />
             <End Role="SupplierProduct" EntitySet="SupplierProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Forwarder_Supplier" Association="DatabaseModel.FK_Forwarder_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Forwarder" EntitySet="Forwarder" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="sysdiagrams">
@@ -407,6 +429,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="SupplierProduct">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Forwarder_Supplier">
+          <End Type="DatabaseModel.Supplier" Role="Supplier" Multiplicity="1" />
+          <End Type="DatabaseModel.Forwarder" Role="Forwarder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Forwarder">
               <PropertyRef Name="SupplierId" />
             </Dependent>
           </ReferentialConstraint>

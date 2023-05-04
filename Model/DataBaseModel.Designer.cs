@@ -1,4 +1,4 @@
-﻿// Создание кода T4 для модели "C:\Users\Node\Desktop\Proj\Course\src\Data\DataBaseModel.edmx" включено. 
+﻿// Создание кода T4 для модели "C:\Users\Node\Desktop\Учёба\Folder\Course\src\Model\DataBaseModel.edmx" включено. 
 // Чтобы включить формирование кода прежних версий, измените значение свойства "Стратегия создания кода" конструктора
 // на "Legacy ObjectContext". Это свойство доступно в окне "Свойства", если модель
 // открыта в конструкторе.

@@ -7,15 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AppDB.Data
+namespace AppDB.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Supplier
+    public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Supplier()
+        public Product()
         {
             this.Invoice = new HashSet<Invoice>();
             this.SupplierProduct = new HashSet<SupplierProduct>();
@@ -23,12 +23,13 @@ namespace AppDB.Data
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
-        public Nullable<long> PhoneNumber { get; set; }
-        public string Email { get; set; }
+        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> TypeId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Invoice> Invoice { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ProductType ProductType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SupplierProduct> SupplierProduct { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿using AppDB.Data;
+﻿using AppDB.Model;
 using System;
 using System.Linq;
 using System.Windows;
@@ -8,9 +8,9 @@ namespace AppDB.View
 {
     public partial class AddingWindow : Window
     {
-        Invoice _invoice; // Выбранная для изменения накладная
-        MainWindow _mainWindow; // Главная страница
-        DatabaseEntities database;
+        private Invoice _invoice; // Выбранная для изменения накладная
+        private MainWindow _mainWindow; // Главная страница
+        private DatabaseEntities database;
 
         public AddingWindow(MainWindow mainWindow)
         {
@@ -38,7 +38,6 @@ namespace AppDB.View
             ValidateInput();
             database.Invoice.Add(_invoice);
             database.SaveChanges();
-            //Обновление таблицы на главной странице
             _mainWindow.ReadData();
             Hide();
         }

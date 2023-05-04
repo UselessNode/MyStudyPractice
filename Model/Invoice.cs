@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AppDB.Data
+namespace AppDB.Model
 {
     using System;
     using System.Collections.Generic;

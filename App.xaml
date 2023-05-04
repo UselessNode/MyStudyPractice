@@ -11,8 +11,8 @@
                 <materialDesign:BundledTheme
                     x:Name="appTheme"
                     BaseTheme="Dark"
-                    PrimaryColor="Grey"
-                    SecondaryColor="Amber" />
+                    PrimaryColor="LightBlue"
+                    SecondaryColor="Cyan" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

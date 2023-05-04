@@ -7,24 +7,32 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AppDB.Data
+namespace AppDB.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Forwarder
+    public partial class Supplier
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Forwarder()
+        public Supplier()
         {
             this.Invoice = new HashSet<Invoice>();
+            this.SupplierProduct = new HashSet<SupplierProduct>();
+            this.Forwarder = new HashSet<Forwarder>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public int SupplierId { get; set; }
+        public string Address { get; set; }
+        public Nullable<long> PhoneNumber { get; set; }
+        public string Email { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Invoice> Invoice { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SupplierProduct> SupplierProduct { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Forwarder> Forwarder { get; set; }
     }
 }

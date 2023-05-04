@@ -13,7 +13,7 @@ namespace AppDB.View
         {
             InitializeComponent();
             // For skip authorization uncomment next line:
-            //OpenMainWindow();
+            OpenMainWindow();
         }
 
         private void EnterenceButton_Click(object sender, RoutedEventArgs e)

@@ -1,10 +1,8 @@
 ﻿using AppDB.Model;
-using AppDB.View;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,19 +17,40 @@ using System.Windows.Shapes;
 
 namespace AppDB.View
 {
-    public partial class EditingWindow : Window
+    /// <summary>
+    /// Логика взаимодействия для AddNewInvoiceWindow.xaml
+    /// </summary>
+    public partial class InvoiceWindow : Window
     {
         Invoice _invoice; // Выбранная для изменения накладная
         MainWindow _mainWindow; // Главная страница
         DatabaseEntities database;
-
-        public EditingWindow(Invoice invoice, MainWindow mainWindow)
+        enum Type
+        {
+            Editing = 0,
+            Adding = 1
+        }
+        Type operationType;
+        public InvoiceWindow(Invoice invoice, MainWindow mainWindow)
         {
             InitializeComponent();
+            operationType = Type.Editing;
             _invoice = invoice;
             _mainWindow = mainWindow;
             database = _mainWindow.Entities;
             DataContext = _invoice;
+            SaveButton.Content = "Сохранить";
+        }
+
+        public InvoiceWindow(MainWindow mainWindow)
+        {
+            InitializeComponent();
+            operationType = Type.Adding;
+            _invoice = new Invoice();
+            _mainWindow = mainWindow;
+            database = _mainWindow.Entities;
+            DataContext = _invoice;
+            SaveButton.Content = "Добавить";
         }
 
         // Сбор данных с полей ввода
@@ -50,9 +69,11 @@ namespace AppDB.View
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             ValidateInput();
+            if (operationType == Type.Adding) 
+                database.Invoice.Add(_invoice);
             database.SaveChanges();
             _mainWindow.ReadData();
-            this.Hide();
+            Hide();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -61,11 +82,12 @@ namespace AppDB.View
             ComboBoxProduct.ItemsSource = database.Product.ToList();
             ComboBoxPurveyor.ItemsSource = database.Supplier.ToList();
             ComboBoxForwarder.ItemsSource = database.Forwarder.ToList();
-            
+
             // Индексы при редактировании
             ComboBoxProduct.SelectedIndex = _invoice.ProductId is null ? -1 : (int)_invoice.ProductId;
-            ComboBoxPurveyor.SelectedIndex = _invoice.SupplierId is null? -1 : (int)_invoice.SupplierId;
+            ComboBoxPurveyor.SelectedIndex = _invoice.SupplierId is null ? -1 : (int)_invoice.SupplierId;
             ComboBoxForwarder.SelectedIndex = _invoice.ForwarderId is null ? -1 : (int)_invoice.ForwarderId;
         }
+
     }
 }

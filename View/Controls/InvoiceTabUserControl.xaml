@@ -1,0 +1,211 @@
+﻿<UserControl
+    x:Class="AppDB.View.Controls.InvoiceTabUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AppDB.View.Controls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <materialDesign:Card Margin="15">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <!--#region Панель управления-->
+            <ToolBarTray IsLocked="True">
+                <ToolBar ClipToBounds="False" Style="{StaticResource MaterialDesignToolBar}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            VerticalAlignment="Center"
+                            Kind="Search"
+                            Opacity=".56" />
+                        <TextBox
+                            x:Name="SearchTextBox"
+                            MinWidth="300"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Поиск"
+                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                            BorderThickness="0"
+                            FontSize="12" />
+
+                        <Button
+                            x:Name="DeleteRecordButton"
+                            Padding="0"
+                            Style="{StaticResource MaterialDesignFlatDarkButton}"
+                            ToolTip="Сброс фильтров и поиска">
+                            <materialDesign:PackIcon Kind="ClearBox" />
+                        </Button>
+                    </StackPanel>
+                    <DatePicker
+                        x:Name="DatePickerStart"
+                        Margin="8,0,8,0"
+                        materialDesign:TextFieldAssist.PrefixText="C: "
+                        Style="{StaticResource MaterialDesignDatePicker}" />
+                    <DatePicker
+                        x:Name="DatePickerEnd"
+                        Margin="8,0,8,0"
+                        materialDesign:TextFieldAssist.PrefixText="По: "
+                        Style="{StaticResource MaterialDesignDatePicker}" />
+                </ToolBar>
+            </ToolBarTray>
+            <!--#endregion-->
+            <!--#region Таблица Invoice-->
+            <DataGrid
+                x:Name="InvoicesDataGrid"
+                Grid.Row="1"
+                materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+                materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserSortColumns="False"
+                FocusVisualStyle="{x:Null}">
+
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Id">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    MaxWidth="20"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Id}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Дата отбытия">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    MaxWidth="70"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding DepartureDate, StringFormat=d, ConverterCulture=ru-Ru}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Дата прибытия">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    MaxWidth="70"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ArrivalDate, StringFormat=d, ConverterCulture=ru-Ru}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="120" Header="Товар">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Width="auto"
+                                    MaxWidth="120"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Product.Name}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="auto" Header="Поставщик">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    MaxWidth="120"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Supplier.Name}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn MaxWidth="160" Header="Экспедитор">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    MaxWidth="150"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Forwarder.Name}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn MaxWidth="120" Header="Стоимость">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Cost, StringFormat=C0, ConverterCulture=ru-Ru}"
+                                    TextWrapping="WrapWithOverflow" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--#region Кнопки-->
+
+                    <DataGridTemplateColumn Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    x:Name="UpdateRecordButton"
+                                    Width="30"
+                                    Height="30"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    ToolTip="Редактировать запись">
+                                    <materialDesign:PackIcon Kind="Edit" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    x:Name="DeleteRecordButton"
+                                    Width="30"
+                                    Height="30"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    ToolTip="Удалить запись">
+                                    <materialDesign:PackIcon Kind="Delete" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--#endregion-->
+
+                </DataGrid.Columns>
+            </DataGrid>
+            <!--#endregion-->
+            <!--#region Кнопка добавления-->
+            <materialDesign:ColorZone Grid.Row="2">
+                <Button
+                    x:Name="CreateRecordButton"
+                    Width="150"
+                    Margin="8"
+                    Style="{StaticResource MaterialDesignFlatSecondaryButton}">
+                    <materialDesign:PackIcon Kind="Add" />
+                </Button>
+            </materialDesign:ColorZone>
+            <!--#endregion-->
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

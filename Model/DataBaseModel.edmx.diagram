@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="614cc41a10ee4278b6681eec17ffc644" Name="Diagram1" ShowGrid="true" DisplayType="true" ZoomLevel="55">
+      <Diagram DiagramId="614cc41a10ee4278b6681eec17ffc644" Name="Diagram1" ShowGrid="true" DisplayType="true" ZoomLevel="100">
         <EntityTypeShape EntityType="DatabaseModel.Forwarder" Width="2.5" PointX="8.125" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.Invoice" Width="2.625" PointX="4.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Invoice" Width="2.625" PointX="4.75" PointY="2" IsExpanded="true" FillColor="96, 92, 98" />
         <EntityTypeShape EntityType="DatabaseModel.Product" Width="1.875" PointX="2.625" PointY="6.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DatabaseModel.ProductCategory" Width="1.5" PointX="6" PointY="5.875" IsExpanded="true" FillColor="DarkSlateGray" />
         <EntityTypeShape EntityType="DatabaseModel.ProductType" Width="1.5" PointX="6" PointY="7.625" IsExpanded="true" FillColor="DarkSlateGray" />
@@ -20,6 +20,7 @@
         <AssociationConnector Association="DatabaseModel.FK_Product_ProductType" />
         <AssociationConnector Association="DatabaseModel.FK_SupplierProduct_Product" />
         <AssociationConnector Association="DatabaseModel.FK_SupplierProduct_Supplier" />
+        <AssociationConnector Association="DatabaseModel.FK_Forwarder_Supplier" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
