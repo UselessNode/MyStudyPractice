@@ -14,12 +14,8 @@
     <Window.Resources>
         <Style BasedOn="{StaticResource MaterialDesignFilledTextBox}" TargetType="TextBox">
             <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
-        </Style>
-        <Style BasedOn="{StaticResource MaterialDesignFilledComboBox}" TargetType="ComboBox">
-            <Setter Property="materialDesign:ComboBoxAssist.MaxLength" Value="2" />
-            <Setter Property="materialDesign:HintAssist.Hint" Value="2" />
-            <Setter Property="materialDesign:HintAssist.HintOpacity" Value=".26" />
-            <Setter Property="IsEditable" Value="True" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="8" />
         </Style>
     </Window.Resources>
 

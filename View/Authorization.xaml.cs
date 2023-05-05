@@ -4,9 +4,6 @@ using System.Windows;
 
 namespace AppDB.View
 {
-    /// <summary>
-    /// Логика взаимодействия для Authorization.xaml
-    /// </summary>
     public partial class Authorization : Window
     {
         public Authorization()

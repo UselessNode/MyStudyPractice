@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -21,32 +22,38 @@ namespace AppDB.View
         Product _product;
         MainWindow _mainWindow; // Главная страница
         DatabaseEntities database;
-        enum Type
-        {
-            Editing = 0,
-            Adding = 1
-        }
+        enum Type { Editing = 0, Adding = 1 }
         Type operationType;
         public ProductWindow(Product product, MainWindow mainWindow)
         {
             InitializeComponent();
             operationType = Type.Editing;
+            SaveButton.Content = "Сохранить";
             _product = product;
             _mainWindow = mainWindow;
-            database = _mainWindow.Entities;
-            DataContext = _product;
-            SaveButton.Content = "Сохранить";
+            ReadData();
         }
 
         public ProductWindow(MainWindow mainWindow)
         {
             InitializeComponent();
             operationType = Type.Adding;
+            SaveButton.Content = "Добавить";
             _product = new Product();
             _mainWindow = mainWindow;
+            ReadData();
+        }
+
+        private void ReadData()
+        {
             database = _mainWindow.Entities;
             DataContext = _product;
-            SaveButton.Content = "Добавить";
+
+            // Инициализация данных ComboBox'ов
+            ComboBoxProductCathegory.ItemsSource = database.ProductCategory.ToList();
+            ComboBoxProductType.ItemsSource = database.ProductType.ToList();
+            ComboBoxProductCathegory.SelectedIndex = _product.CategoryId is null ? -1 : (int)_product.CategoryId;
+            ComboBoxProductType.SelectedIndex = _product.TypeId is null ? -1 : (int)_product.TypeId;
         }
 
         // Сбор данных с полей ввода
@@ -68,13 +75,18 @@ namespace AppDB.View
             Hide();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void CreateNewProductCathegoryButton_Click(object sender, RoutedEventArgs e)
         {
-            // Инициализация данных ComboBox'ов
-            ComboBoxProductCathegory.ItemsSource = database.ProductCategory.ToList();
-            ComboBoxProductType.ItemsSource = database.ProductType.ToList();
-            ComboBoxProductCathegory.SelectedIndex = _product.CategoryId is null ? -1 : (int)_product.CategoryId;
-            ComboBoxProductType.SelectedIndex = _product.TypeId is null ? -1 : (int)_product.TypeId;
+            var productCathegoryWindow = new ProductCathegoryWindow(_mainWindow);
+            productCathegoryWindow.ShowDialog();
+            ReadData();
+        }
+
+        private void CreateNewProductTypeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var productTypeWindow = new ProductTypeWindow(_mainWindow);
+            productTypeWindow.ShowDialog();
+            ReadData();
         }
     }
 }

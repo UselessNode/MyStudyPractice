@@ -1,12 +1,7 @@
 ﻿using AppDB.Model;
 using AppDB.View;
-using MaterialDesignThemes.Wpf;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using System.Web.UI;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -52,12 +47,52 @@ namespace AppDB
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var input = (sender as TextBox).Text.ToLower();
-            int resultCount = Entities.Invoice.Count(x => x.Product.Name.Contains(input));
+            string input = (sender as TextBox).Text.ToLower();
+            int resultCount = 0;
+            int totalCount = 0;
+            switch (TabContoler.SelectedIndex)
+            {
+                case 0: //Invoice
+                    resultCount = Entities.Invoice.Count(x => x.Product.Name.Contains(input) 
+                    || x.Supplier.Name.Contains(input)
+                    || x.Forwarder.Name.Contains(input));
+                    totalCount = Entities.Invoice.ToList().Count();
+                    InvoicesDataGrid.ItemsSource = Entities.Invoice.Where(x => x.Product.Name.Contains(input)
+                    || x.Supplier.Name.Contains(input)
+                    || x.Forwarder.Name.Contains(input)).ToList();
+                    break;
+                case 1: //Product
+                    resultCount = Entities.Product.Count(x => x.Name.Contains(input)
+                    || x.ProductType.Name.Contains(input)
+                    || x.ProductCategory.Name.Contains(input));
+                    totalCount = Entities.Product.ToList().Count();
+                    ProductDataGrid.ItemsSource = Entities.Product.Where(x => x.Name.Contains(input)
+                    || x.ProductType.Name.Contains(input)
+                    || x.ProductCategory.Name.Contains(input)).ToList();
+                    break;
+                case 2: //Forwarder
+                    resultCount = Entities.Forwarder.Count(x => x.Name.Contains(input) 
+                    || x.Supplier.Name.Contains(input));
+                    totalCount = Entities.Forwarder.ToList().Count();
+                    ForwarderDataGrid.ItemsSource = Entities.Forwarder.Where(x => x.Name.Contains(input)
+                    || x.Supplier.Name.Contains(input)).ToList();
+                    break;
+                case 3: //Supplier
+                    resultCount = Entities.Supplier.Count(x => x.Name.Contains(input)
+                    || x.Address.Contains(input)
+                    || x.PhoneNumber.ToString().Contains(input)
+                    || x.Email.Contains(input));
+                    totalCount = Entities.Supplier.ToList().Count();
+                    SupplierDataGrid.ItemsSource = Entities.Supplier.Where(x => x.Name.Contains(input)
+                    || x.Address.Contains(input)
+                    || x.PhoneNumber.ToString().Contains(input)
+                    || x.Email.Contains(input)).ToList();
+                    break;
+                default: break;
+            }           
             if (!(String.IsNullOrEmpty(input)))
             {
-                InvoicesDataGrid.ItemsSource = Entities.Invoice.Where(x => x.Product.Name.Contains(input)).ToList();
-                Title = $"База данных | Поиск: {input} | Результатов: {resultCount} из {Entities.Invoice.ToList().Count()}";
+                Title = $"База данных | Поиск: {input} | Результатов: {resultCount} из {totalCount}";
             }
             else
                 ReadData();
@@ -137,7 +172,15 @@ namespace AppDB
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Application.Current.Shutdown();
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void TabContoler_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TabContoler.SelectedIndex != 0)
+                FiltrationPanel.Visibility = Visibility.Collapsed;
+            else
+                FiltrationPanel.Visibility = Visibility.Visible;
         }
     }
 }

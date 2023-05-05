@@ -23,32 +23,36 @@ namespace AppDB.View
         Forwarder _forwarder;
         MainWindow _mainWindow; // Главная страница
         DatabaseEntities database;
-        enum Type
-        {
-            Editing = 0,
-            Adding = 1
-        }
+        enum Type { Editing = 0, Adding = 1 }
         Type operationType;
         public ForwardeerWindow(Forwarder forwarder, MainWindow mainWindow)
         {
             InitializeComponent();
             operationType = Type.Editing;
+            SaveButton.Content = "Сохранить";
             _forwarder = forwarder;
             _mainWindow = mainWindow;
+            ReadData();
+        }
+
+        private void ReadData()
+        {
             database = _mainWindow.Entities;
             DataContext = _forwarder;
-            SaveButton.Content = "Сохранить";
+
+            // Инициализация данных ComboBox'ов
+            ComboBoxSupplier.ItemsSource = database.Supplier.ToList();
+            ComboBoxSupplier.SelectedIndex = _forwarder.SupplierId;
         }
 
         public ForwardeerWindow(MainWindow mainWindow)
         {
             InitializeComponent();
             operationType = Type.Adding;
+            SaveButton.Content = "Добавить";
             _forwarder = new Forwarder();
             _mainWindow = mainWindow;
-            database = _mainWindow.Entities;
-            DataContext = _forwarder;
-            SaveButton.Content = "Добавить";
+            ReadData();
         }
 
         // Сбор данных с полей ввода
@@ -69,11 +73,11 @@ namespace AppDB.View
             Hide();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void CreateNewSupplierButton_Click(object sender, RoutedEventArgs e)
         {
-            // Инициализация данных ComboBox'ов
-            ComboBoxSupplier.ItemsSource = database.Supplier.ToList();
-            ComboBoxSupplier.SelectedIndex = _forwarder.SupplierId;
+            var supplierWindow = new SupplierWindow(_mainWindow);
+            supplierWindow.ShowDialog();
+            ReadData();
         }
     }
 }

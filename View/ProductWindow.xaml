@@ -8,50 +8,95 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Добавление нового продукта"
     MinWidth="400"
-    Loaded="Window_Loaded"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
     mc:Ignorable="d">
     <Window.Resources>
         <Style BasedOn="{StaticResource MaterialDesignFilledTextBox}" TargetType="TextBox">
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="8" />
             <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
         </Style>
         <Style BasedOn="{StaticResource MaterialDesignFilledComboBox}" TargetType="ComboBox">
             <Setter Property="materialDesign:ComboBoxAssist.MaxLength" Value="2" />
             <Setter Property="materialDesign:HintAssist.Hint" Value="2" />
             <Setter Property="materialDesign:HintAssist.HintOpacity" Value=".26" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="8" />
             <Setter Property="IsEditable" Value="True" />
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignOutlinedButton}" TargetType="Button">
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Padding" Value="3" />
         </Style>
     </Window.Resources>
 
     <materialDesign:ColorZone>
-        <StackPanel>
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <TextBox
                 x:Name="TextBoxID"
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
                 materialDesign:HintAssist.Hint="Id"
                 Text="{Binding Id}"
                 Visibility="Collapsed" />
             <TextBox
                 x:Name="TextBoxProductName"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
                 materialDesign:HintAssist.Hint="Название товара"
                 Text="{Binding Name}" />
             <ComboBox
                 x:Name="ComboBoxProductCathegory"
+                Grid.Row="2"
+                Grid.Column="0"
                 materialDesign:HintAssist.Hint="Категория"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding Supplier}" />
             <ComboBox
                 x:Name="ComboBoxProductType"
+                Grid.Row="3"
+                Grid.Column="0"
                 materialDesign:HintAssist.Hint="Тип товара"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding ProductType}" />
+
+            <Button
+                x:Name="CreateNewProductCathegoryButton"
+                Grid.Row="2"
+                Grid.Column="1"
+                Click="CreateNewProductCathegoryButton_Click"
+                Content="{materialDesign:PackIcon Kind=Add}" />
+            <Button
+                x:Name="CreateNewProductTypeButton"
+                Grid.Row="3"
+                Grid.Column="1"
+                Click="CreateNewProductTypeButton_Click"
+                Content="{materialDesign:PackIcon Kind=Add}" />
+
             <Button
                 x:Name="SaveButton"
+                Grid.Row="4"
+                Grid.ColumnSpan="2"
                 Width="200"
                 Margin="10"
                 Click="SaveButton_Click"
-                Content="Добавить" />
-        </StackPanel>
+                Content="Добавить"
+                Style="{StaticResource MaterialDesignFlatAccentBgButton}" />
+        </Grid>
     </materialDesign:ColorZone>
 
 </Window>

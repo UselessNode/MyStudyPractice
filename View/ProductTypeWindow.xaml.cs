@@ -1,5 +1,7 @@
-﻿using System;
+﻿using AppDB.Model;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +21,51 @@ namespace AppDB.View
     /// </summary>
     public partial class ProductTypeWindow : Window
     {
-        public ProductTypeWindow()
+        DatabaseEntities database;
+        ProductType _productType;
+        MainWindow _mainWindow;
+        enum Type { Editing = 0, Adding = 1 }
+        Type operationType;
+
+        public ProductTypeWindow(MainWindow mainWindow, ProductType productType)
         {
             InitializeComponent();
+            _mainWindow = mainWindow;
+            _productType = productType;
+            SaveButton.Content = "Сохранить";
+            operationType = Type.Editing;
+            ReadData();
+        }
+
+        public ProductTypeWindow(MainWindow mainWindow)
+        {
+            InitializeComponent();
+            _mainWindow = mainWindow;
+            _productType = new ProductType();
+            SaveButton.Content = "Добавить";
+            operationType = Type.Adding;
+            ReadData();
+        }
+
+        void ReadData()
+        {
+            database = _mainWindow.Entities;
+            DataContext = _productType;
+        }
+
+        void ValidateInput()
+        {
+            _productType.Name = TextBoxTypeName.Text;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            ValidateInput();
+            if (operationType == Type.Adding)
+                database.ProductType.Add(_productType);
+            database.SaveChanges();
+            _mainWindow.ReadData();
+            Hide();
         }
     }
 }

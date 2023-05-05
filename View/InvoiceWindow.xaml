@@ -8,67 +8,128 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Добавление новой записи"
     MinWidth="400"
-    Loaded="Window_Loaded"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
     mc:Ignorable="d">
     <Window.Resources>
+        <Style BasedOn="{StaticResource MaterialDesignFilledDatePicker}" TargetType="DatePicker">
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="8" />
+        </Style>
         <Style BasedOn="{StaticResource MaterialDesignFilledTextBox}" TargetType="TextBox">
             <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="8" />
         </Style>
         <Style BasedOn="{StaticResource MaterialDesignFilledComboBox}" TargetType="ComboBox">
             <Setter Property="materialDesign:ComboBoxAssist.MaxLength" Value="2" />
             <Setter Property="materialDesign:HintAssist.Hint" Value="2" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="8" />
             <Setter Property="materialDesign:HintAssist.HintOpacity" Value=".26" />
             <Setter Property="IsEditable" Value="True" />
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignOutlinedButton}" TargetType="Button">
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Padding" Value="3" />
         </Style>
     </Window.Resources>
 
     <materialDesign:ColorZone>
-        <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
             <TextBox
                 x:Name="TextBoxID"
+                Grid.Row="0"
+                Grid.Column="0"
                 materialDesign:HintAssist.Hint="Id"
                 Text="{Binding Id}"
                 Visibility="Collapsed" />
             <DatePicker
                 x:Name="DepartureDateInput"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
                 materialDesign:HintAssist.Hint="Дата отбытия"
-                Style="{StaticResource MaterialDesignFilledDatePicker}"
                 Text="{Binding DepartureDate, ConverterCulture=ru-Ru}" />
             <DatePicker
                 x:Name="ArrivalDateInput"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
                 materialDesign:HintAssist.Hint="Дата прибытия"
-                Style="{StaticResource MaterialDesignFilledDatePicker}"
                 Text="{Binding ArrivalDate, ConverterCulture=ru-Ru}" />
+
             <ComboBox
                 x:Name="ComboBoxProduct"
+                Grid.Row="3"
+                Grid.Column="0"
                 materialDesign:HintAssist.Hint="Товар"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding Product}"
                 SelectedItem="{Binding Product}" />
+            <Button
+                x:Name="CreateNewProductButton"
+                Grid.Row="3"
+                Grid.Column="1"
+                Click="CreateNewProductButton_Click"
+                Content="{materialDesign:PackIcon Kind=Add}" />
             <ComboBox
                 x:Name="ComboBoxPurveyor"
+                Grid.Row="4"
+                Grid.Column="0"
                 materialDesign:HintAssist.Hint="Поставщик"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding Supplier}" />
+            <Button
+                x:Name="CreateNewSupplierButton"
+                Grid.Row="4"
+                Grid.Column="1"
+                Click="CreateNewSupplierButton_Click"
+                Content="{materialDesign:PackIcon Kind=Add}" />
+
             <ComboBox
                 x:Name="ComboBoxForwarder"
+                Grid.Row="5"
+                Grid.Column="0"
                 materialDesign:HintAssist.Hint="Экспедитор"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding Forwarder}" />
+            <Button
+                x:Name="CreateNewForwarderButton"
+                Grid.Row="5"
+                Grid.Column="1"
+                Click="CreateNewForwarderButton_Click"
+                Content="{materialDesign:PackIcon Kind=Add}" />
             <TextBox
                 x:Name="TextBoxCost"
+                Grid.Row="6"
+                Grid.ColumnSpan="2"
                 materialDesign:HintAssist.Hint="Стоимость"
-                Style="{StaticResource MaterialDesignFilledTextBox}"
                 Text="{Binding Cost}" />
             <Button
                 x:Name="SaveButton"
+                Grid.Row="7"
+                Grid.ColumnSpan="2"
                 Width="200"
                 Margin="10"
                 Click="SaveButton_Click"
-                Content="Добавить" />
-        </StackPanel>
+                Content="Добавить"
+                Style="{StaticResource MaterialDesignFlatAccentBgButton}" />
+        </Grid>
     </materialDesign:ColorZone>
 
 </Window>

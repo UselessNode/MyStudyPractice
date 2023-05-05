@@ -14,12 +14,8 @@
     <Window.Resources>
         <Style BasedOn="{StaticResource MaterialDesignFilledTextBox}" TargetType="TextBox">
             <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
-        </Style>
-        <Style BasedOn="{StaticResource MaterialDesignFilledComboBox}" TargetType="ComboBox">
-            <Setter Property="materialDesign:ComboBoxAssist.MaxLength" Value="2" />
-            <Setter Property="materialDesign:HintAssist.Hint" Value="2" />
-            <Setter Property="materialDesign:HintAssist.HintOpacity" Value=".26" />
-            <Setter Property="IsEditable" Value="True" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Margin" Value="8" />
         </Style>
     </Window.Resources>
     <materialDesign:ColorZone>
@@ -30,13 +26,14 @@
                 Text="{Binding Id}"
                 Visibility="Collapsed" />
             <TextBox
-                x:Name="TextBoxProductName"
+                x:Name="TextBoxCathegoryName"
                 materialDesign:HintAssist.Hint="Название категории"
                 Text="{Binding Name}" />
             <Button
                 x:Name="SaveButton"
                 Width="200"
                 Margin="10"
+                Click="SaveButton_Click"
                 Content="Добавить" />
         </StackPanel>
     </materialDesign:ColorZone>
