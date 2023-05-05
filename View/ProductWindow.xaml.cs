@@ -61,8 +61,8 @@ namespace AppDB.View
         {
             // Чтение ввода и запись в новую накладную
             _product.Name = TextBoxProductName.Text;
-            _product.CategoryId = ComboBoxProductCathegory.SelectedIndex == -1 ? null : ComboBoxProductCathegory.SelectedIndex + 1;
-            _product.TypeId = ComboBoxProductType.SelectedIndex == -1 ? null : ComboBoxProductType.SelectedIndex + 1;
+            _product.CategoryId = ComboBoxProductCathegory.SelectedIndex == -1 ? null : ComboBoxProductCathegory.SelectedIndex;
+            _product.TypeId = ComboBoxProductType.SelectedIndex == -1 ? null : ComboBoxProductType.SelectedIndex;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)

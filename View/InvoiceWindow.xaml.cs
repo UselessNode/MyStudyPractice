@@ -70,21 +70,29 @@ namespace AppDB.View
             // Чтение ввода и запись в новую накладную
             _invoice.DepartureDate = String.IsNullOrEmpty(DepartureDateInput.Text) ? DateTime.Now : DateTime.Parse(DepartureDateInput.Text);
             _invoice.ArrivalDate = String.IsNullOrEmpty(ArrivalDateInput.Text) ? DateTime.Now : DateTime.Parse(ArrivalDateInput.Text);
-            _invoice.ProductId = ComboBoxProduct.SelectedIndex == -1 ? null : ComboBoxProduct.SelectedIndex + 1;
-            _invoice.SupplierId = ComboBoxPurveyor.SelectedIndex == -1 ? null : ComboBoxPurveyor.SelectedIndex + 1;
-            _invoice.ForwarderId = ComboBoxForwarder.SelectedIndex == -1 ? null : ComboBoxForwarder.SelectedIndex + 1;
+            _invoice.ProductId = ComboBoxProduct.SelectedIndex == -1 ? null : ComboBoxProduct.SelectedIndex;
+            _invoice.SupplierId = ComboBoxPurveyor.SelectedIndex == -1 ? null : ComboBoxPurveyor.SelectedIndex;
+            _invoice.ForwarderId = ComboBoxForwarder.SelectedIndex == -1 ? null : ComboBoxForwarder.SelectedIndex;
             _invoice.Cost = String.IsNullOrEmpty(TextBoxCost.Text) ? 0 : int.Parse(Regex.Match(TextBoxCost.Text, @"\d+").Value);
         }
 
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            ValidateInput();
-            if (operationType == Type.Adding) 
-                database.Invoice.Add(_invoice);
-            database.SaveChanges();
-            _mainWindow.ReadData();
-            Hide();
+            try
+            {
+                ValidateInput();
+                if (operationType == Type.Adding) 
+                    database.Invoice.Add(_invoice);
+                database.SaveChanges();
+                _mainWindow.ReadData();
+                Hide();
+            }
+            catch (Exception exp)
+            {
+                MessageBox.Show($"Message:{exp.Message} \n InnerException:{exp.InnerException}", "Ошибка",MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
         }
 
         private void CreateNewProductButton_Click(object sender, RoutedEventArgs e)

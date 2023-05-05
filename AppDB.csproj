@@ -7,7 +7,7 @@
     <ProjectGuid>{407088DB-88EF-4EE9-B529-1EAF3E85DBF2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>AppDB</RootNamespace>
-    <AssemblyName>AppDB</AssemblyName>
+    <AssemblyName>Database Management</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <LangVersion>9.0</LangVersion>
     <FileAlignment>512</FileAlignment>
