@@ -63,9 +63,9 @@ namespace AppDB.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
-        internal static System.Drawing.Icon File {
+        internal static System.Drawing.Icon App_icon {
             get {
-                object obj = ResourceManager.GetObject("File", resourceCulture);
+                object obj = ResourceManager.GetObject("App_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

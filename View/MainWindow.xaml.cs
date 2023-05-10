@@ -1,9 +1,12 @@
 ﻿using AppDB.Model;
 using AppDB.View;
+using AppDB.ViewModel;
 using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace AppDB
 {
@@ -13,6 +16,7 @@ namespace AppDB
         public MainWindow()
         {
             InitializeComponent();
+            this.Language = XmlLanguage.GetLanguage("ru-RU");
             ReadData();
         }
 
@@ -45,11 +49,13 @@ namespace AppDB
             Title = "Менеджер базы данных";
         }
 
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string input = (sender as TextBox).Text.ToLower();
-            int resultCount = 0;
-            int totalCount = 0;
+    private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        string input = (sender as TextBox).Text.ToLower();
+        int resultCount = 0;
+        int totalCount = 0;
+        if (!(String.IsNullOrEmpty(input)))
+        { 
             switch (TabContoler.SelectedIndex)
             {
                 case 0: //Invoice
@@ -89,13 +95,12 @@ namespace AppDB
                     || x.Email.Contains(input)).ToList();
                     break;
                 default: break;
-            }           
-            if (!(String.IsNullOrEmpty(input)))
-            {
-                Title = $"База данных | Поиск: {input} | Результатов: {resultCount} из {totalCount}";
             }
-            else
-                ReadData();
+            Title = $"База данных | Поиск: {input} | Результатов: {resultCount} из {totalCount}";
+        }
+        else
+            ReadData();
+            
         }
 
         public void UpdateRecordButton_Click(object sender, RoutedEventArgs e)
@@ -182,5 +187,41 @@ namespace AppDB
             else
                 FiltrationPanel.Visibility = Visibility.Visible;
         }
+
+        private void ExportAsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Получение текущей выбранной вкладки
+            TabItem selectedTab = (TabItem)TabContoler.SelectedItem;
+            // Поиск элемента DataGrid на выбранной вкладке
+            DataGrid dataGrid = null;
+            string tabName = "null";
+
+            switch (TabContoler.SelectedIndex)
+            {
+                case 0: //Invoice
+                    tabName = "Inovoice";
+                    dataGrid = InvoicesDataGrid;
+                    break;
+                case 1: //Product
+                    tabName = "Product";
+                    dataGrid = ProductDataGrid;
+                    break;
+                case 2: //Forwarder
+                    tabName = "Forwarder";
+                    dataGrid = ForwarderDataGrid;
+                    break;
+                case 3: //Supplier
+                    tabName = "Supplier";
+                    dataGrid = SupplierDataGrid;
+                    break;
+                default:
+                    MessageBox.Show($"TabContoler.SelectedIndex: [{TabContoler.SelectedIndex}]",
+                        "Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                    return;
+            }
+            Exporter exporter = new Exporter();
+            exporter.ExportAsExcel(dataGrid, tabName);
+        }
+
     }
 }

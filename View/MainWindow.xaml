@@ -76,7 +76,14 @@
                         SelectedDateChanged="DatePicker_SelectedDateChanged"
                         Style="{StaticResource MaterialDesignDatePicker}" />
                 </StackPanel>
-
+                <StackPanel>
+                    <Button
+                        x:Name="ExportAsButton"
+                        Click="ExportAsButton_Click"
+                        Content="{materialDesign:PackIcon Kind=FileExport}"
+                        Style="{StaticResource MaterialDesignFlatDarkButton}"
+                        ToolTip="Создание отчёта в Excel" />
+                </StackPanel>
             </ToolBar>
         </ToolBarTray>
         <TabControl
@@ -109,93 +116,13 @@
                         </Grid.RowDefinitions>
                         <DataGrid x:Name="InvoicesDataGrid" Grid.Row="0">
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Id">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Id}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn Header="Дата отбытия">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="70"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding DepartureDate, StringFormat=d, ConverterCulture=ru-Ru}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Дата прибытия">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="70"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding ArrivalDate, StringFormat=d, ConverterCulture=ru-Ru}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="120" Header="Товар">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                Width="auto"
-                                                MaxWidth="120"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Product.Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="auto" Header="Поставщик">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="120"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Supplier.Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn MaxWidth="160" Header="Экспедитор">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="150"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Forwarder.Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn MaxWidth="120" Header="Стоимость">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Cost, StringFormat=C0, ConverterCulture=ru-Ru}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
+                                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding DepartureDate, StringFormat=d, ConverterCulture=ru-Ru}" Header="Дата отбытия" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding ArrivalDate, StringFormat=d, ConverterCulture=ru-Ru}" Header="Дата прибытия" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Product.Name}" Header="Товар" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Supplier.Name}" Header="Поставщик" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Forwarder.Name}" Header="Экспедитор" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Cost, StringFormat=C0, ConverterCulture=ru-Ru}" Header="Стоимость" />
                                 <!--#region Кнопки-->
 
                                 <DataGridTemplateColumn Width="40">
@@ -271,54 +198,10 @@
                         <DataGrid x:Name="ProductDataGrid" Grid.Row="0">
 
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Id">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Id}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Название товара">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                Width="auto"
-                                                MaxWidth="300"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="180" Header="Тип товара">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="180"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding ProductType.Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="auto" Header="Категория товара">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding ProductCategory.Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Название товара" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding ProductType.Name}" Header="Тип товара" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding ProductCategory.Name}" Header="Категория товара" />
 
                                 <!--#region Кнопки-->
 
@@ -394,42 +277,9 @@
                         <DataGrid x:Name="ForwarderDataGrid" Grid.Row="0">
 
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Id">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Id}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="auto" Header="ФИО">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                Width="auto"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="auto" Header="Поставщик">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="120"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Supplier.Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Supplier.Name}" Header="Поставщик" />
                                 <!--#region Кнопки-->
 
                                 <DataGridTemplateColumn Width="40">
@@ -516,56 +366,11 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Название">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                Width="auto"
-                                                MaxWidth="120"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Name}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Адресс">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="300"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Address}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Номер телефона">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                Width="auto"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding PhoneNumber}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Email">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                Width="auto"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Email}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
+                                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Название" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Address}" Header="Адресс" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding PhoneNumber}" Header="Номер телефона" />
+                                <materialDesign:DataGridTextColumn Binding="{Binding Email}" Header="Email" />
                                 <!--#region Кнопки-->
 
                                 <DataGridTemplateColumn Width="40">

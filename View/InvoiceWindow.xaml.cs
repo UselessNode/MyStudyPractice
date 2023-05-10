@@ -81,12 +81,12 @@ namespace AppDB.View
         {
             try
             {
-                ValidateInput();
+                ValidateInput(); // Считывание данных
                 if (operationType == Type.Adding) 
                     database.Invoice.Add(_invoice);
                 database.SaveChanges();
                 _mainWindow.ReadData();
-                Hide();
+                Hide(); // Закрытие окна
             }
             catch (Exception exp)
             {
