@@ -86,7 +86,8 @@
                 Grid.Row="3"
                 Grid.Column="1"
                 Click="CreateNewProductButton_Click"
-                Content="{materialDesign:PackIcon Kind=Add}" />
+                Content="{materialDesign:PackIcon Kind=Add}"
+                ToolTip="Создать новый товар" />
             <ComboBox
                 x:Name="ComboBoxPurveyor"
                 Grid.Row="4"
@@ -99,7 +100,8 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Click="CreateNewSupplierButton_Click"
-                Content="{materialDesign:PackIcon Kind=Add}" />
+                Content="{materialDesign:PackIcon Kind=Add}"
+                ToolTip="Создать нового поставщика" />
 
             <ComboBox
                 x:Name="ComboBoxForwarder"
@@ -113,7 +115,8 @@
                 Grid.Row="5"
                 Grid.Column="1"
                 Click="CreateNewForwarderButton_Click"
-                Content="{materialDesign:PackIcon Kind=Add}" />
+                Content="{materialDesign:PackIcon Kind=Add}"
+                ToolTip="Создать новый экспедитора" />
             <TextBox
                 x:Name="TextBoxCost"
                 Grid.Row="6"

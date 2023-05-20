@@ -354,18 +354,6 @@
                         <DataGrid x:Name="SupplierDataGrid" Grid.Row="0">
 
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Id">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                MaxWidth="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Id}"
-                                                TextWrapping="WrapWithOverflow" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
                                 <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                                 <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Название" />
                                 <materialDesign:DataGridTextColumn Binding="{Binding Address}" Header="Адресс" />
