@@ -7,409 +7,483 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="AppMainWindow"
     Title="Менеджер базы данных"
+    MinWidth="400"
+    MinHeight="400"
     Closing="Window_Closing"
+    Loaded="AppMainWindow_Loaded"
     Style="{StaticResource MaterialDesignWindow}"
+    Topmost="False"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
-        <Style TargetType="Label">
-            <Setter Property="FontFamily" Value="Segoe UI Semibold" />
+        <Style BasedOn="{StaticResource MaterialDesignLabel}" TargetType="Label">
             <Setter Property="FontSize" Value="12" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Foreground" Value="White" />
         </Style>
         <Style BasedOn="{StaticResource MaterialDesignDataGrid}" TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="SelectionMode" Value="Single" />
+
+            <Setter Property="CanUserReorderColumns" Value="False" />
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            <Setter Property="materialDesign:DataGridAssist.CellPadding" Value="4 2 2 2" />
-            <Setter Property="materialDesign:DataGridAssist.ColumnHeaderPadding" Value="4 2 2 2" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+            <Setter Property="GridLinesVisibility" Value="None" />
+
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         </Style>
+        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="18,6,18,6" />
+
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Padding" Value="18,2,18,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="IsSelected" Value="False" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style x:Key="RangeSliderLabel" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="Segoe UI Bold" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style
+            x:Key="RangeSlider"
+            BasedOn="{StaticResource MaterialDesignSlider}"
+            TargetType="Slider">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ToolBarTray IsLocked="True">
-            <ToolBar ClipToBounds="False" Style="{StaticResource MaterialDesignToolBar}">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon
-                        VerticalAlignment="Center"
-                        Kind="Search"
-                        Opacity=".56" />
-                    <TextBox
-                        x:Name="SearchTextBox"
-                        MinWidth="300"
-                        Margin="8,0,0,0"
-                        VerticalAlignment="Center"
-                        materialDesign:HintAssist.Hint="Поиск"
-                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                        BorderThickness="0"
-                        FontSize="12"
-                        TextChanged="SearchTextBox_TextChanged" />
-                    <Button
-                        x:Name="DeleteRecordButton"
-                        Padding="0"
-                        Click="ResetSearchButton_Click"
-                        Style="{StaticResource MaterialDesignFlatDarkButton}"
-                        ToolTip="Сброс фильтров и поиска">
-                        <materialDesign:PackIcon Kind="ClearBox" />
-                    </Button>
-                </StackPanel>
-                <StackPanel
-                    x:Name="FiltrationPanel"
-                    Orientation="Horizontal"
-                    ToolTip="Фильтрация по дате">
-                    <DatePicker
-                        x:Name="DatePickerStart"
-                        Margin="8,0,8,0"
-                        materialDesign:TextFieldAssist.PrefixText="C: "
-                        SelectedDateChanged="DatePicker_SelectedDateChanged"
-                        Style="{StaticResource MaterialDesignDatePicker}" />
-                    <DatePicker
-                        x:Name="DatePickerEnd"
-                        Margin="8,0,8,0"
-                        materialDesign:TextFieldAssist.PrefixText="По: "
-                        SelectedDateChanged="DatePicker_SelectedDateChanged"
-                        Style="{StaticResource MaterialDesignDatePicker}" />
-                </StackPanel>
-                <StackPanel>
-                    <Button
-                        x:Name="ExportAsButton"
+    <DockPanel LastChildFill="True">
+        <materialDesign:Card Margin="5" DockPanel.Dock="Top">
+            <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
+                <MenuItem x:Name="tests" Header="_Таблица">
+                    <MenuItem
                         Click="ExportAsButton_Click"
-                        Content="{materialDesign:PackIcon Kind=FileExport}"
-                        Style="{StaticResource MaterialDesignFlatDarkButton}"
-                        ToolTip="Создание отчёта в Excel" />
-                </StackPanel>
-            </ToolBar>
-        </ToolBarTray>
-        <TabControl
-            x:Name="TabContoler"
-            Grid.Row="1"
-            materialDesign:ColorZoneAssist.Mode="PrimaryDark"
-            SelectionChanged="TabContoler_SelectionChanged"
-            Style="{StaticResource MaterialDesignNavigationRailTabControl}"
-            TabStripPlacement="Right">
-
-            <!--#region Таблица Invoice-->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Margin="0">
-                        <materialDesign:PackIcon
-                            Width="30"
-                            Height="30"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Kind="Table"
-                            ToolTip="Таблица «Invoice»" />
-                        <Label Content="Invoice" />
+                        Header="Сохранить как _Excel"
+                        Icon="{materialDesign:PackIcon Kind=MicrosoftExcel}" />
+                </MenuItem>
+                <MenuItem Header="_Правка">
+                    <MenuItem Click="CreateRecordButton_Click" Header="До_бавить запись" />
+                </MenuItem>
+                <MenuItem Header="_Вид">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Тёмная тема: " />
+                        <ToggleButton
+                            x:Name="DarkThemeToggle"
+                            Checked="DarkThemeToggle_Checked"
+                            Click="DarkThemeToggle_Checked"
+                            Content="{materialDesign:PackIcon Kind=WeatherNight}"
+                            IsChecked="True" />
                     </StackPanel>
-                </TabItem.Header>
-                <materialDesign:Card Margin="15">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <DataGrid x:Name="InvoicesDataGrid" Grid.Row="0">
-                            <DataGrid.Columns>
-                                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding DepartureDate, StringFormat=d, ConverterCulture=ru-Ru}" Header="Дата отбытия" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding ArrivalDate, StringFormat=d, ConverterCulture=ru-Ru}" Header="Дата прибытия" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Product.Name}" Header="Товар" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Supplier.Name}" Header="Поставщик" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Forwarder.Name}" Header="Экспедитор" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Cost, StringFormat=C0, ConverterCulture=ru-Ru}" Header="Стоимость" />
-                                <!--#region Кнопки-->
-
-                                <DataGridTemplateColumn Width="40">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button
-                                                x:Name="UpdateRecordButton"
-                                                Width="30"
-                                                Height="30"
-                                                Click="UpdateRecordButton_Click"
-                                                Style="{StaticResource MaterialDesignToolButton}"
-                                                ToolTip="Редактировать запись">
-                                                <materialDesign:PackIcon Kind="Edit" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn Width="40">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button
-                                                x:Name="DeleteRecordButton"
-                                                Width="30"
-                                                Height="30"
-                                                Click="DeleteRecordButton_Click"
-                                                Style="{StaticResource MaterialDesignToolButton}"
-                                                ToolTip="Удалить запись">
-                                                <materialDesign:PackIcon Kind="Delete" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <!--#endregion-->
-
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <materialDesign:ColorZone Grid.Row="1">
+                </MenuItem>
+            </Menu>
+        </materialDesign:Card>
+        <materialDesign:Card Margin="5,0,5,5" Padding="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <ToolBarTray IsLocked="True">
+                    <ToolBar ClipToBounds="False" Style="{StaticResource MaterialDesignToolBar}">
+                        <materialDesign:Card Margin="5" Padding="5">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    VerticalAlignment="Center"
+                                    Kind="Search"
+                                    Opacity=".56" />
+                                <TextBox
+                                    x:Name="SearchTextBox"
+                                    MinWidth="300"
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Поиск"
+                                    materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                    BorderThickness="0"
+                                    FontSize="12"
+                                    TextChanged="SearchTextBox_TextChanged" />
+                                <Button
+                                    x:Name="DeleteRecordButton"
+                                    Margin="5,0"
+                                    Padding="5,0"
+                                    Click="ResetSearchButton_Click"
+                                    Content="{materialDesign:PackIcon Kind=Reload}"
+                                    Style="{StaticResource MaterialDesignFlatDarkButton}"
+                                    ToolTip="Сброс фильтров и поиска" />
+                            </StackPanel>
+                        </materialDesign:Card>
+                        <materialDesign:Card Margin="5" Padding="5">
                             <Button
-                                x:Name="CreateRecordButton"
-                                Width="150"
-                                Margin="8"
-                                Click="CreateRecordButton_Click"
-                                Style="{StaticResource MaterialDesignFlatSecondaryButton}">
-                                <materialDesign:PackIcon Kind="Add" />
-                            </Button>
-                        </materialDesign:ColorZone>
-                    </Grid>
-                </materialDesign:Card>
-            </TabItem>
-            <!--#endregion-->
-            <!--#region Таблица Product-->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Margin="0">
-                        <materialDesign:PackIcon
-                            Width="30"
-                            Height="30"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Kind="Table"
-                            ToolTip="Таблица «Product»" />
-                        <Label Content="Product" />
-                    </StackPanel>
-                </TabItem.Header>
-                <materialDesign:Card Margin="15">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <DataGrid x:Name="ProductDataGrid" Grid.Row="0">
+                                x:Name="ExportAsButton"
+                                Margin="10,0"
+                                Padding="4,0"
+                                Click="ExportAsButton_Click"
+                                Content="{materialDesign:PackIcon Kind=ContentSave}"
+                                Style="{StaticResource MaterialDesignFlatDarkButton}"
+                                ToolTip="Создание отчёта в Excel" />
+                        </materialDesign:Card>
+                        <ComboBox
+                            x:Name="InvoiceFiltrationTypeComboBox"
+                            Margin="5"
+                            Padding="5"
+                            materialDesign:HintAssist.Hint="Фильтр"
+                            SelectionChanged="FiltrationComboBox_SelectionChanged"
+                            Style="{StaticResource MaterialDesignComboBox}">
+                            <ComboBoxItem Content="Дата отбытия" />
+                            <ComboBoxItem Content="Дата прибытия" />
+                            <ComboBoxItem Content="Стоимость" />
+                        </ComboBox>
+                        <materialDesign:Card
+                            x:Name="FiltrationByDatePanel"
+                            Margin="5"
+                            Padding="5"
+                            ToolTip="Фильтрация по дате">
+                            <StackPanel Orientation="Horizontal">
+                                <DatePicker
+                                    x:Name="DatePickerStart"
+                                    Margin="8,0,8,0"
+                                    materialDesign:TextFieldAssist.PrefixText="C: "
+                                    SelectedDateChanged="DatePicker_SelectedDateChanged"
+                                    Style="{StaticResource MaterialDesignDatePicker}" />
+                                <DatePicker
+                                    x:Name="DatePickerEnd"
+                                    Margin="8,0,8,0"
+                                    materialDesign:TextFieldAssist.PrefixText="По: "
+                                    SelectedDateChanged="DatePicker_SelectedDateChanged"
+                                    Style="{StaticResource MaterialDesignDatePicker}" />
+                            </StackPanel>
+                        </materialDesign:Card>
+                        <materialDesign:Card
+                            x:Name="FiltrationByCostPanel"
+                            Margin="5"
+                            Padding="5"
+                            ToolTip="Фильтрация по стоимости">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal">
+                                    <Slider
+                                        x:Name="LowerBoundSlider"
+                                        Style="{StaticResource RangeSlider}"
+                                        ValueChanged="SliderValueChanged" />
+                                    <TextBlock Style="{StaticResource RangeSliderLabel}" Text="{Binding ElementName=LowerBoundSlider, Path=Value, StringFormat={}{0:F0}}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Slider
+                                        x:Name="UpperBoundSlider"
+                                        Style="{StaticResource RangeSlider}"
+                                        ValueChanged="SliderValueChanged" />
+                                    <TextBlock Style="{StaticResource RangeSliderLabel}" Text="{Binding ElementName=UpperBoundSlider, Path=Value, StringFormat={}{0:F0}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </ToolBar>
+                </ToolBarTray>
+                <TabControl
+                    x:Name="TabContoler"
+                    Grid.Row="1"
+                    materialDesign:ColorZoneAssist.Mode="PrimaryDark"
+                    SelectionChanged="TabContoler_SelectionChanged"
+                    Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+                    TabStripPlacement="Left">
 
-                            <DataGrid.Columns>
-                                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Название товара" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding ProductType.Name}" Header="Тип товара" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding ProductCategory.Name}" Header="Категория товара" />
+                    <!--#region Таблица Invoice-->
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Margin="0">
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    Height="30"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="Table"
+                                    ToolTip="Таблица «Invoice»" />
+                                <Label Content="Invoice" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <DataGrid x:Name="InvoicesDataGrid">
+                                <DataGrid.Columns>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding DepartureDate, StringFormat=d, ConverterCulture=ru-Ru}" Header="Дата отбытия" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding ArrivalDate, StringFormat=d, ConverterCulture=ru-Ru}" Header="Дата прибытия" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Product.Name}" Header="Товар" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Supplier.Name}" Header="Поставщик" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Forwarder.Name}" Header="Экспедитор" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Cost, StringFormat=C0, ConverterCulture=ru-Ru}" Header="Стоимость" />
+                                    <!--#region Кнопки-->
 
-                                <!--#region Кнопки-->
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    x:Name="UpdateRecordButton"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Click="UpdateRecordButton_Click"
+                                                    Style="{StaticResource MaterialDesignToolButton}"
+                                                    ToolTip="Редактировать запись">
+                                                    <materialDesign:PackIcon Kind="Edit" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Width="40">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button
-                                                x:Name="UpdateRecordButton"
-                                                Width="30"
-                                                Height="30"
-                                                Click="UpdateRecordButton_Click"
-                                                Style="{StaticResource MaterialDesignToolButton}"
-                                                ToolTip="Редактировать запись">
-                                                <materialDesign:PackIcon Kind="Edit" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    x:Name="DeleteRecordButton"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Click="DeleteRecordButton_Click"
+                                                    Style="{StaticResource MaterialDesignToolButton}"
+                                                    ToolTip="Удалить запись">
+                                                    <materialDesign:PackIcon Kind="Delete" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Width="40">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button
-                                                x:Name="DeleteRecordButton"
-                                                Width="30"
-                                                Height="30"
-                                                Click="DeleteRecordButton_Click"
-                                                Style="{StaticResource MaterialDesignToolButton}"
-                                                ToolTip="Удалить запись">
-                                                <materialDesign:PackIcon Kind="Delete" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                    <!--#endregion-->
 
-                                <!--#endregion-->
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <!--#endregion-->
+                    <!--#region Таблица Product-->
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Margin="0">
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    Height="30"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="Table"
+                                    ToolTip="Таблица «Product»" />
+                                <Label Content="Product" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <DataGrid x:Name="ProductDataGrid">
 
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <materialDesign:ColorZone Grid.Row="1">
-                            <Button
-                                Width="150"
-                                Margin="8"
-                                Click="CreateRecordButton_Click"
-                                Style="{StaticResource MaterialDesignFlatSecondaryButton}">
-                                <materialDesign:PackIcon Kind="Add" />
-                            </Button>
-                        </materialDesign:ColorZone>
-                    </Grid>
-                </materialDesign:Card>
-            </TabItem>
-            <!--#endregion-->
-            <!--#region Таблица Forwarder-->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Margin="0">
-                        <materialDesign:PackIcon
-                            Width="30"
-                            Height="30"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Kind="Table"
-                            ToolTip="Таблица «Forwarder»" />
-                        <Label Content="Forwarder" />
-                    </StackPanel>
-                </TabItem.Header>
-                <materialDesign:Card Margin="15">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <DataGrid x:Name="ForwarderDataGrid" Grid.Row="0">
+                                <DataGrid.Columns>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Название товара" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding ProductType.Name}" Header="Тип товара" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding ProductCategory.Name}" Header="Категория товара" />
 
-                            <DataGrid.Columns>
-                                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Supplier.Name}" Header="Поставщик" />
-                                <!--#region Кнопки-->
+                                    <!--#region Кнопки-->
 
-                                <DataGridTemplateColumn Width="40">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button
-                                                x:Name="UpdateRecordButton"
-                                                Width="30"
-                                                Height="30"
-                                                Click="UpdateRecordButton_Click"
-                                                Style="{StaticResource MaterialDesignToolButton}"
-                                                ToolTip="Редактировать запись">
-                                                <materialDesign:PackIcon Kind="Edit" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    x:Name="UpdateRecordButton"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Click="UpdateRecordButton_Click"
+                                                    Style="{StaticResource MaterialDesignToolButton}"
+                                                    ToolTip="Редактировать запись">
+                                                    <materialDesign:PackIcon Kind="Edit" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Width="40">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button
-                                                x:Name="DeleteRecordButton"
-                                                Width="30"
-                                                Height="30"
-                                                Click="DeleteRecordButton_Click"
-                                                Style="{StaticResource MaterialDesignToolButton}"
-                                                ToolTip="Удалить запись">
-                                                <materialDesign:PackIcon Kind="Delete" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    x:Name="DeleteRecordButton"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Click="DeleteRecordButton_Click"
+                                                    Style="{StaticResource MaterialDesignToolButton}"
+                                                    ToolTip="Удалить запись">
+                                                    <materialDesign:PackIcon Kind="Delete" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                <!--#endregion-->
+                                    <!--#endregion-->
 
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <materialDesign:ColorZone Grid.Row="1">
-                            <Button
-                                Width="150"
-                                Margin="8"
-                                Click="CreateRecordButton_Click"
-                                Style="{StaticResource MaterialDesignFlatSecondaryButton}">
-                                <materialDesign:PackIcon Kind="Add" />
-                            </Button>
-                        </materialDesign:ColorZone>
-                    </Grid>
-                </materialDesign:Card>
-            </TabItem>
-            <!--#endregion-->
-            <!--#region Таблица Supplier-->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Margin="0">
-                        <materialDesign:PackIcon
-                            Width="30"
-                            Height="30"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Kind="Table"
-                            ToolTip="Таблица «Supplier»" />
-                        <Label Content="Supplier" />
-                    </StackPanel>
-                </TabItem.Header>
-                <materialDesign:Card Margin="15">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <DataGrid x:Name="SupplierDataGrid" Grid.Row="0">
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <!--#endregion-->
+                    <!--#region Таблица Forwarder-->
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Margin="0">
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    Height="30"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="Table"
+                                    ToolTip="Таблица «Forwarder»" />
+                                <Label Content="Forwarder" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <DataGrid x:Name="ForwarderDataGrid" Grid.Row="0">
 
-                            <DataGrid.Columns>
-                                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Название" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Address}" Header="Адресс" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding PhoneNumber}" Header="Номер телефона" />
-                                <materialDesign:DataGridTextColumn Binding="{Binding Email}" Header="Email" />
-                                <!--#region Кнопки-->
+                                <DataGrid.Columns>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Supplier.Name}" Header="Поставщик" />
+                                    <!--#region Кнопки-->
 
-                                <DataGridTemplateColumn Width="40">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button
-                                                x:Name="UpdateRecordButton"
-                                                Width="30"
-                                                Height="30"
-                                                Click="UpdateRecordButton_Click"
-                                                Style="{StaticResource MaterialDesignToolButton}"
-                                                ToolTip="Редактировать запись">
-                                                <materialDesign:PackIcon Kind="Edit" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    x:Name="UpdateRecordButton"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Click="UpdateRecordButton_Click"
+                                                    Style="{StaticResource MaterialDesignToolButton}"
+                                                    ToolTip="Редактировать запись">
+                                                    <materialDesign:PackIcon Kind="Edit" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Width="40">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button
-                                                x:Name="DeleteRecordButton"
-                                                Width="30"
-                                                Height="30"
-                                                Click="DeleteRecordButton_Click"
-                                                Style="{StaticResource MaterialDesignToolButton}"
-                                                ToolTip="Удалить запись">
-                                                <materialDesign:PackIcon Kind="Delete" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    x:Name="DeleteRecordButton"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Click="DeleteRecordButton_Click"
+                                                    Style="{StaticResource MaterialDesignToolButton}"
+                                                    ToolTip="Удалить запись">
+                                                    <materialDesign:PackIcon Kind="Delete" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                <!--#endregion-->
+                                    <!--#endregion-->
 
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <materialDesign:ColorZone Grid.Row="1">
-                            <Button
-                                Width="150"
-                                Margin="8"
-                                Click="CreateRecordButton_Click"
-                                Style="{StaticResource MaterialDesignFlatSecondaryButton}">
-                                <materialDesign:PackIcon Kind="Add" />
-                            </Button>
-                        </materialDesign:ColorZone>
-                    </Grid>
-                </materialDesign:Card>
-            </TabItem>
-            <!--#endregion-->
-        </TabControl>
-    </Grid>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <!--#endregion-->
+                    <!--#region Таблица Supplier-->
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Margin="0">
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    Height="30"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="Table"
+                                    ToolTip="Таблица «Supplier»" />
+                                <Label Content="Supplier" />
+                            </StackPanel>
+                        </TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <DataGrid x:Name="SupplierDataGrid" Grid.Row="0">
+
+                                <DataGrid.Columns>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Название" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Address}" Header="Адресс" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding PhoneNumber}" Header="Номер телефона" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                                    <!--#region Кнопки-->
+
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    x:Name="UpdateRecordButton"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Click="UpdateRecordButton_Click"
+                                                    Style="{StaticResource MaterialDesignToolButton}"
+                                                    ToolTip="Редактировать запись">
+                                                    <materialDesign:PackIcon Kind="Edit" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    x:Name="DeleteRecordButton"
+                                                    Width="30"
+                                                    Height="30"
+                                                    Click="DeleteRecordButton_Click"
+                                                    Style="{StaticResource MaterialDesignToolButton}"
+                                                    ToolTip="Удалить запись">
+                                                    <materialDesign:PackIcon Kind="Delete" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <!--#endregion-->
+
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <!--#endregion-->
+                </TabControl>
+                <Button
+                    Grid.Row="2"
+                    Width="150"
+                    Margin="8"
+                    Click="CreateRecordButton_Click"
+                    Content="{materialDesign:PackIcon Kind=Add}"
+                    Style="{StaticResource MaterialDesignFlatSecondaryButton}" />
+            </Grid>
+        </materialDesign:Card>
+    </DockPanel>
 </Window>
